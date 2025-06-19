@@ -2,3 +2,4 @@ Data/*
 !.gitkeep
 app/__pycache__/
 Streamlit/__pycache__/
+__pycache__/
