@@ -1,0 +1,4 @@
+   streamlit==1.44.0
+   bcrypt
+   psycopg2
+   docker

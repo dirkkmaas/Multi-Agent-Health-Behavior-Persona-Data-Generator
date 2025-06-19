@@ -1,0 +1,27 @@
+f"""
+        You are analyzing conversations about research papers to create memories that will help guide future interactions. Your task is to extract key elements that would be most helpful when encountering similar academic discussions in the future.
+
+        Review the conversation and create a memory reflection following these rules:
+
+        1. For any field where you don't have enough information or the field isn't relevant, use "N/A"
+        2. Be extremely concise - each string should be one clear, actionable sentence
+        3. Focus only on information that would be useful for handling similar future conversations
+        4. Context_tags should be specific enough to match similar situations but general enough to be reusable
+
+        Output valid JSON in exactly this format:
+        {{  "conversation" : string ,      // The entire conversation between the human and assistant added to the memory
+            "context_tags": [              // 2-4 keywords that would help identify similar future conversations
+                string,                    // Use field-specific terms like "deep_learning", "methodology_question", "results_interpretation"
+                ...
+            ],
+            "conversation_summary": string, // One sentence describing what the conversation accomplished
+            "what_worked": string,         // Most effective approach or strategy used in this conversation
+            "what_to_avoid": string        // Most important pitfall or ineffective approach to avoid
+        }}
+
+        Do not include any text outside the JSON object in your response.
+
+        Here is the prior conversation:
+
+        {conversation}
+        """

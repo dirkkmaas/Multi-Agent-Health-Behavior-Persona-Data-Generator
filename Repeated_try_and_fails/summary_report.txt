@@ -1,0 +1,70 @@
+=== Persona Feature Check ===
+age_group: All ages within bounds. Average age: 54.72
+gender: Distribution (expected vs actual):
+  male: expected 0.57, actual 0.56, count 14
+  female: expected 0.42, actual 0.44, count 11
+education_level: Distribution (expected vs actual):
+  bachelor: expected 0.40, actual 0.40, count 10
+  master: expected 0.30, actual 0.32, count 8
+  high_school: expected 0.20, actual 0.20, count 5
+  doctorate and above: expected 0.10, actual 0.08, count 2
+occupation_status: Distribution (expected vs actual):
+  unemployed: expected 0.10, actual 0.08, count 2
+  fulltime: expected 0.40, actual 0.40, count 10
+  self-employed: expected 0.10, actual 0.08, count 2
+  parttime: expected 0.40, actual 0.44, count 11
+marital_status: Distribution (expected vs actual):
+  separated: expected 0.00, actual 0.00, count 0
+  widowed: expected 0.00, actual 0.00, count 0
+  married: expected 0.50, actual 0.52, count 13
+  single: expected 0.10, actual 0.08, count 2
+  engaged: expected 0.30, actual 0.32, count 8
+  divorced: expected 0.10, actual 0.08, count 2
+standard: Skipped (non-numeric expected values)
+
+=== Event Constraint Violations ===
+No violations found.
+
+=== Seasonality/Trend Constraint Check ===
+Actual sample size (counted): 25
+Actual horizon (counted): 91 days
+Event: long sleep
+  seasonality - morning: 0.0% actual, expected at least 0.0% (events: 0/2275)
+  seasonality - afternoon: 0.0% actual, expected at least 0.0% (events: 0/2275)
+  seasonality - evening: 0.0% actual, expected at least 0.0% (events: 0/2275)
+  seasonality - night: 100.0% actual, expected at least 100.0% (events: 2275/2275)
+Event: working
+  seasonality - Avg events per day in ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']: 2.00, other days: 0.00, diff: 2.00 (inf%), expected diff: 100
+  seasonality - morning: 50.0% actual, expected at least 50.0% (events: 1625/3250)
+  seasonality - afternoon: 50.0% actual, expected at least 50.0% (events: 1625/3250)
+  seasonality - evening: 0.0% actual, expected at least 0.0% (events: 0/3250)
+  seasonality - night: 0.0% actual, expected at least 0.0% (events: 0/3250)
+Event: walking
+  seasonality - morning: 35.6% actual, expected at least 40.0% (events: 5217/14649)
+  seasonality - afternoon: 19.5% actual, expected at least 20.0% (events: 2860/14649)
+  seasonality - evening: 23.3% actual, expected at least 20.0% (events: 3412/14649)
+  seasonality - night: 18.2% actual, expected at least 20.0% (events: 2665/14649)
+  seasonality - Outside defined windows: 3.4% (events: 495/14649)
+  seasonality - Avg events per day in ['Saturday', 'Sunday']: 7.29, other days: 6.10, diff: 1.19 (19.5%), expected diff: 25
+Event: raining
+  seasonality - morning: 36.5% actual, expected at least 40.0% (events: 3573/9781)
+  seasonality - afternoon: 18.0% actual, expected at least 20.0% (events: 1759/9781)
+  seasonality - evening: 17.8% actual, expected at least 20.0% (events: 1744/9781)
+  seasonality - night: 19.1% actual, expected at least 20.0% (events: 1870/9781)
+  seasonality - Outside defined windows: 8.5% (events: 835/9781)
+Event: smoking
+  seasonality - morning: 36.7% actual, expected at least 40.0% (events: 4736/12911)
+  seasonality - afternoon: 16.5% actual, expected at least 20.0% (events: 2131/12911)
+  seasonality - evening: 16.8% actual, expected at least 20.0% (events: 2163/12911)
+  seasonality - night: 22.3% actual, expected at least 20.0% (events: 2875/12911)
+  seasonality - Outside defined windows: 7.8% (events: 1006/12911)
+  seasonality - Avg events per day in ['Saturday', 'Sunday']: 6.30, other days: 5.42, diff: 0.88 (16.2%), expected diff: 10
+Event: stress
+  seasonality - morning: 42.5% actual, expected at least 40.0% (events: 5910/13913)
+  seasonality - afternoon: 17.4% actual, expected at least 20.0% (events: 2423/13913)
+  seasonality - evening: 20.0% actual, expected at least 20.0% (events: 2779/13913)
+  seasonality - night: 17.5% actual, expected at least 20.0% (events: 2432/13913)
+  seasonality - Outside defined windows: 2.7% (events: 369/13913)
+
+=== LTL (Event Model) Constraint Violations ===
+No violations found.

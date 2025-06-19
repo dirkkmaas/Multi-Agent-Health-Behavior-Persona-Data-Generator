@@ -1,0 +1,8 @@
+ """   
+        You recall similar conversations with the user, here are the details:
+
+       Conversation summaries: {conversation_history} 
+       What has worked well: {what_worked}
+       What to avoid: {what_to_avoid}
+        
+        Use these memories as context for your response to the user."""

@@ -1,0 +1,88 @@
+version: '3.8'
+
+services:
+  fastapi_app: # has the environment variables for postgresql
+    build:
+      context: .
+      dockerfile: app/Dockerfile
+    ports:
+      - "8000:8000"
+    volumes: # connect to chroma storage
+      - chroma_data:/chroma_db
+    environment: # set postgres variables for connection
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_NAME=HBP
+      - DB_USERNAME=HBP1
+      - DB_PASSWORD=Test
+    depends_on: # wait for postgres
+      postgres:
+        condition: service_healthy
+    networks:
+      - app_network
+    healthcheck: 
+      test: ["CMD", "curl", "-f", "http://localhost:8000/docs"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  hb_agent:
+    image: hb_agent_image:latest  # initialize this first trough docker compose up --build hb_agent
+    build:
+      context: .
+      dockerfile: HB_Agent/Dockerfile
+    ports:
+      - "5000:5000" #default port
+    volumes:
+      - chroma_data:/chroma_db # mount storage
+    networks:
+      - app_network
+    environment: #needed for initialization
+      - OPENAI_KEY 
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/docs"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: "no" 
+    profiles: ["manual"] # not started trough usual docker compose up but trough python interactino
+
+  streamlit:
+    build:
+      context: .
+      dockerfile: Streamlit/Dockerfile
+    ports:
+      - "8501:8501"
+    depends_on:
+      fastapi_app:
+        condition: service_healthy # wait for fastapi
+    networks:
+      - app_network
+    volumes: # allow the application to start and stop docker containers (for hb_agent)
+      - /var/run/docker.sock:/var/run/docker.sock 
+
+  postgres:
+    image: postgres:latest # use available docekrized version
+    environment: # placeholder values, can be adjusted
+      POSTGRES_DB: HBP
+      POSTGRES_USER: HBP1
+      POSTGRES_PASSWORD: Test
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U HBP1 -d HBP"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+networks:
+  app_network:
+    driver: bridge
+
+volumes: # volumes for user-specific storage and system storage
+  chroma_data:
+  postgres_data:

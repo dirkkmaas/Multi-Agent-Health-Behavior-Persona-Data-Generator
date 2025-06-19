@@ -1,0 +1,473 @@
+I want you to generate synthetic, time-stamped event data for a cohort of 25 adults aged between 43 and 62 years old, each wearing an Oura ring and carrying a smartphone continuously over a period of 13 weeks. Each day is divided into four mutually exclusive parts: morning (from 05:00 to 10:00), afternoon (from 10:00 to 16:00), evening (from 16:00 to 20:00), and night (from 20:00 to 24:00). Every participant should be assigned a fixed demographic profile at the beginning of the study, which remains constant throughout the simulation. Each participant’s exact age should be drawn randomly within the given range as whole years. Gender should be assigned with a 57.5% probability of being male and 42.5% female. The education level must be distributed with 60% of the participants having completed high school, 30% holding a bachelor’s degree, 10% holding a master’s degree, and 0% holding a doctorate or higher. For occupational status, distribute the participants across unemployed (30%), part-time employed (40%), full-time employed (30%), and self-employed (0%). Marital status must follow the following probabilities: 45% single, 15% married, 20% engaged, 20% divorced, and 0% separated or widowed. Generate six distinct kinds of behavioral and environmental events, following the rules below: Long sleep: Randomly create exactly one episode per participant per day. Each episode must last at least 6 hours and no more than 9 hours, and it must start within the night part of the day (20:00 to 24:00). Provide the fields id, type, start time, end time, and duration. Working: Create exactly two episodes per participant per weekday. The combined duration of both episodes must fall between 6 and 9 hours. Each working event should last between 3 and 5 hours. These events can only be scheduled in the morning and the afternoon. No working episodes should occur on Saturdays or Sundays. Provide the fields id, type, start time, end time, and duration. Walking: Create 2 to 8 episodes per participant per day. Each episode must last at least 10 minutes and at most 60 minutes. The total walking time per day must be between 1 and 4 hours. On mornings, increase the likelihood of walking episodes by 20% compared to baseline. On weekends (Saturdays and Sundays), increase the probability of walking episodes by 25% relative to weekdays. Over the course of the 13-week study, linearly increase the average number of weekly walking episodes by 2 from day 1 till day 80, then keep it stable. Provide the fields id, type, start time, end time, duration, steps, and optionally distance. Raining: Create 0 to 12 rain episodes per participant per day. Each episode may last between 0 and 60 minutes. The summed rain duration per day must fall between 0 and 4 hours. Morning rain is 20% more likely than the baseline. Over the first 80 days, linearly reduce the expected number of weekly rain episodes by 3 . Provide the fields id, type, start time, end time, duration, and optionally precipitation. Smoking: Create up to 40 episodes per participant per day. Each episode must last a minimum of 10 minutes and maximal 10 minutes. The total smoking duration per day must fall between 0 and 5 hours. Smoking is 20 percent more likely to occur in the morning compared to the baseline. A 10 percent increase of smoking events must occur in the weekend. Over the course of the 13-week study, vary the number of episodes according to the following pattern. During the first 7 days, decrease the number of episodes by 8. Then, from day 8 through day 15, increase the number of episodes by 3. Between day 16 and day 23, apply a decreasing trend reducing the count by 2. From day 24 through day 31, increase the number of episodes again by 1. Over the following 14 days, from day 32 to day 46 , apply another drop, this time decreasing the number of episodes by 4. The following 21 days, from day 46 till 68 increase the number of events with 2. Finally, in the last 21 days of the study, from day 69 to day 90, decrease the number of episodes by 7. Provide the fields id, type, start time, end time, and duration. Stress: Randomly generate 2 to 8 episodes per participant per day. Each episode must last at least 10 minutes and no more than 30 minutes. The total duration of daily stress must be between 0 and 4 hours. Morning episodes are 20% more likely to occur compared to other day parts. From day 0 to 90, decrease It by 2 events. Thereafter, keep it steady. Provide the fields id, type, start time, end time, and duration. Please inquire the expert for inter event relations, according to the provided events.
+
+[Expert:] constant_persona_features = { "sample_size": 25, "horizon": { "weeks": 13 }, "age_group": "43-62", "gender": { "male": 0.575, "female": 0.425 }, "education_level": { "high_school": 0.6, "bachelor": 0.3, "master": 0.1, "doctorate and above": 0.0 }, "occupation_status": { "unemployed": 0.3, "parttime": 0.4, "fulltime": 0.3, "self-employed": 0.0 }, "marital_status": { "single": 0.45, "married": 0.15, "engaged": 0.2, "divorced": 0.2, "separated": 0.0, "widowed": 0.0 }, "standard": { "morning": [300, 600], # 05:00-10:00 (560=300, 1060=600) "afternoon": [600, 960], # 10:00-16:00 (1060=600, 1660=960) "evening": [960, 1200], # 16:00-20:00 (1660=960, 2060=1200) "night": [1200, 1440] # 20:00-24:00 (2060=1200, 2460=1440) } # Note: start_date is missing and must be provided by the behavioral scientist. }
+
+Missing required field: start_date (Python datetime object).
+Supervisor: Please request the behavioral scientist to provide the start_date for the simulation (as a Python datetime object, e.g., datetime(2025, 3, 8)).
+Message prompt
+
+[Expert:] eventironmental_data = [ { "event_name": "long_sleep", "source": "unknown", "description": "A single nightly sleep episode per participant, starting between 20:00 and 24:00, lasting 6-9 hours.", "characteristics": { "required": ["id", "type", "starttime", "endtime", "duration"], "optional": [] }, "temporal_constraints": { "per_event_duration": {"min": 6, "max": 9, "unit": "hours"}, "total_event_duration": { "scale": "day", "min": 6, "max": 9, "unit": "hours" }, "total_event_episodes": { "scale": "day", "min": 1, "max": 1, "unit": "number" }, "temporal_patterns": [ { "mode": "seasonality", "details": { "scale": "night", "direction": "increasing", "amount": 100, "unit": "percentage", "within": ["night"] } } ] } }, { "event_name": "working", "source": "unknown", "description": "Two work episodes per participant per weekday, each 3-5 hours, only in morning and afternoon. No work on weekends.", "characteristics": { "required": ["id", "type", "starttime", "endtime", "duration"], "optional": [] }, "temporal_constraints": { "per_event_duration": {"min": 3, "max": 5, "unit": "hours"}, "total_event_duration": { "scale": "day", "min": 6, "max": 9, "unit": "hours" }, "total_event_episodes": { "scale": "day", "min": 2, "max": 2, "unit": "number" }, "temporal_patterns": [ { "mode": "seasonality", "details": { "scale": "weekday", "direction": "increasing", "amount": 100, "unit": "percentage", "within": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"] } }, { "mode": "seasonality", "details": { "scale": "day_part", "direction": "increasing", "amount": 100, "unit": "percentage", "within": ["morning", "afternoon"] } } ] } }, { "event_name": "walking", "source": "unknown", "description": "2-8 walking episodes per participant per day, each 10-60 minutes, total 1-4 hours per day. Morning +20% likely, weekends +25%. Over 13 weeks, linearly increase weekly walking episodes by 2 from day 1 to 80, then stable.", "characteristics": { "required": ["id", "type", "starttime", "endtime", "duration", "steps"], "optional": ["distance"] }, "temporal_constraints": { "per_event_duration": {"min": 10, "max": 60, "unit": "minutes"}, "total_event_duration": { "scale": "day", "min": 1, "max": 4, "unit": "hours" }, "total_event_episodes": { "scale": "day", "min": 2, "max": 8, "unit": "number" }, "temporal_patterns": [ { "mode": "seasonality", "details": { "scale": "morning", "direction": "increasing", "amount": 20, "unit": "percentage", "within": "morning" } }, { "mode": "seasonality", "details": { "scale": "weekend", "direction": "increasing", "amount": 25, "unit": "percentage", "within": ["Saturday", "Sunday"] } }, { "mode": "trend", "details": { "scale": "season", "direction": "increasing", "amount": 2, "unit": "number", "within": "91 days", "start": 1, "end": 80 } } ] } }, { "event_name": "raining", "source": "unknown", "description": "0-12 rain episodes per participant per day, each 0-60 minutes, total 0-4 hours per day. Morning rain +20% likely. Over first 80 days, linearly reduce weekly rain episodes by 3.", "characteristics": { "required": ["id", "type", "starttime", "endtime", "duration"], "optional": ["precipitation"] }, "temporal_constraints": { "per_event_duration": {"min": 0, "max": 60, "unit": "minutes"}, "total_event_duration": { "scale": "day", "min": 0, "max": 4, "unit": "hours" }, "total_event_episodes": { "scale": "day", "min": 0, "max": 12, "unit": "number" }, "temporal_patterns": [ { "mode": "seasonality", "details": { "scale": "morning", "direction": "increasing", "amount": 20, "unit": "percentage", "within": "morning" } }, { "mode": "trend", "details": { "scale": "season", "direction": "decreasing", "amount": 3, "unit": "number", "within": "80 days", "start": 1, "end": 80 } } ] } }, { "event_name": "smoking", "source": "unknown", "description": "Up to 40 smoking episodes per participant per day, each exactly 10 minutes, total 0-5 hours per day. Smoking +20% likely in morning. Weekend: +10% events. Over 13 weeks, vary number of episodes: days 1-7 decrease by 8, days 8-15 increase by 3, days 16-23 decrease by 2, days 24-31 increase by 1, days 32-46 decrease by 4, days 46-68 increase by 2, days 69-90 decrease by 7.", "characteristics": { "required": ["id", "type", "starttime", "endtime", "duration"], "optional": [] }, "temporal_constraints": { "per_event_duration": {"min": 10, "max": 10, "unit": "minutes"}, "total_event_duration": { "scale": "day", "min": 0, "max": 5, "unit": "hours" }, "total_event_episodes": { "scale": "day", "min": 0, "max": 40, "unit": "number" }, "temporal_patterns": [ { "mode": "seasonality", "details": { "scale": "morning", "direction": "increasing", "amount": 20, "unit": "percentage", "within": "morning" } }, { "mode": "seasonality", "details": { "scale": "weekend", "direction": "increasing", "amount": 10, "unit": "percentage", "within": ["Saturday", "Sunday"] } }, { "mode": "trend", "details": { "scale": "season", "direction": "decreasing", "amount": 8, "unit": "number", "within": "7 days", "start": 1, "end": 7 } }, { "mode": "trend", "details": { "scale": "season", "direction": "increasing", "amount": 3, "unit": "number", "within": "8 days", "start": 8, "end": 15 } }, { "mode": "trend", "details": { "scale": "season", "direction": "decreasing", "amount": 2, "unit": "number", "within": "8 days", "start": 16, "end": 23 } }, { "mode": "trend", "details": { "scale": "season", "direction": "increasing", "amount": 1, "unit": "number", "within": "8 days", "start": 24, "end": 31 } }, { "mode": "trend", "details": { "scale": "season", "direction": "decreasing", "amount": 4, "unit": "number", "within": "15 days", "start": 32, "end": 46 } }, { "mode": "trend", "details": { "scale": "season", "direction": "increasing", "amount": 2, "unit": "number", "within": "23 days", "start": 46, "end": 68 } }, { "mode": "trend", "details": { "scale": "season", "direction": "decreasing", "amount": 7, "unit": "number", "within": "22 days", "start": 69, "end": 90 } } ] } }, { "event_name": "stress", "source": "unknown", "description": "2-8 stress episodes per participant per day, each 10-30 minutes, total 0-4 hours per day. Morning: +20% likely. From day 0 to 90, decrease by 2 events, then steady.", "characteristics": { "required": ["id", "type", "starttime", "endtime", "duration"], "optional": [] }, "temporal_constraints": { "per_event_duration": {"min": 10, "max": 30, "unit": "minutes"}, "total_event_duration": { "scale": "day", "min": 0, "max": 4, "unit": "hours" }, "total_event_episodes": { "scale": "day", "min": 2, "max": 8, "unit": "number" }, "temporal_patterns": [ { "mode": "seasonality", "details": { "scale": "morning", "direction": "increasing", "amount": 20, "unit": "percentage", "within": "morning" } }, { "mode": "trend", "details": { "scale": "season", "direction": "decreasing", "amount": 2, "unit": "number", "within": "91 days", "start": 0, "end": 90 } } ] } } ]
+
+Message prompt
+
+[Expert:] ltl_expressions = [ # Exclusion (no overlap) constraints: "G ¬(long_sleep ∧ smoking)", # long sleep and smoking cannot co-occur "G ¬(long_sleep ∧ walking)", # long sleep and walking cannot co-occur "G ¬(long_sleep ∧ stress)", # long sleep and stress cannot co-occur "G ¬(walking ∧ working)", # walking and working cannot co-occur "G ¬(raining ∧ smoking)", # raining and smoking cannot co-occur "G ¬(walking ∧ stress)", # walking and stress cannot co-occur
+
+# Sequencing (eventually follows) constraints:
+"G (stress → F smoking)",         # stress should be followed by a smoking event
+"G (working → F walking)",        # working should eventually be followed by walking
+"G (walking → F stress)",         # walking should eventually be followed by stress
+
+# Overlap (concurrency) constraint:
+"G (working → F (working ∧ stress))" # presence of working must overlap with a stress event
+
+]
+
+Message prompt
+
+[Supervisor]:
+
+[Expert Query: environmental_expert_tool] {"query": "The behavioral scientist requests synthetic, time-stamped event data for a cohort of 25 adults aged between 43 and 62 years old, each wearing an Oura ring and carrying a smartphone continuously over a period of 13 weeks. Each day is divided into four mutually exclusive parts: morning (05:00-10:00), afternoon (10:00-16:00), evening (16:00-20:00), and night (20:00-24:00). Each participant is assigned a fixed demographic profile at the beginning of the study, which remains constant throughout the simulation. Each participant’s exact age should be drawn randomly within the given range as whole years. Gender should be assigned with a 57.5% probability of being male and 42.5% female. The education level must be distributed with 60% high school, 30% bachelor’s, 10% master’s, 0% doctorate or higher. Occupational status: 30% unemployed, 40% part-time employed, 30% full-time employed, 0% self-employed. Marital status: 45% single, 15% married, 20% engaged, 20% divorced, 0% separated or widowed. Please extract and structure all constant persona features and contextual simulation parameters."} [Expert Query: event_expert_tool] {"query": "The behavioral scientist requests generation of six distinct behavioral and environmental events for each participant, with the following specifications:\n\nlong sleep: Exactly one episode per participant per day. Each episode must last at least 6 hours and no more than 9 hours, and must start within the night part (20:00-24:00). Fields: id, type, start time, end time, duration.\n\nworking: Exactly two episodes per participant per weekday. Combined duration per day between 6 and 9 hours. Each event 3-5 hours. Only in morning and afternoon. No working on Saturdays or Sundays. Fields: id, type, start time, end time, duration.\n\nwalking: 2 to 8 episodes per participant per day. Each episode 10-60 minutes. Total walking time per day 1-4 hours. Morning: +20% likelihood. Weekends: +25% probability. Over 13 weeks, linearly increase average weekly walking episodes by 2 from day 1 to 80, then stable. Fields: id, type, start time, end time, duration, steps, optionally distance.\n\nraining: 0 to 12 rain episodes per participant per day. Each episode 0-60 minutes. Total rain duration per day 0-4 hours. Morning rain +20% likely. Over first 80 days, linearly reduce weekly rain episodes by 3. Fields: id, type, start time, end time, duration, optionally precipitation.\n\nsmoking: Up to 40 episodes per participant per day. Each episode exactly 10 minutes. Total smoking duration per day 0-5 hours. Smoking +20% likely in morning. Weekend: +10% events. Over 13 weeks, vary number of episodes: days 1-7 decrease by 8, days 8-15 increase by 3, days 16-23 decrease by 2, days 24-31 increase by 1, days 32-46 decrease by 4, days 46-68 increase by 2, days 69-90 decrease by 7. Fields: id, type, start time, end time, duration.\nstress: 2 to 8 episodes per participant per day. Each episode 10-30 minutes. Total daily stress 0-4 hours. Morning: +20% likely. From day 0 to 90, decrease by 2 events, then steady. Fields: id, type, start time, end time, duration.\n\nPlease structure all event types, characteristics, durations, temporal patterns, and constraints exactly as described. Do not summarize or omit any pattern."} [Expert Query: analytical_expert_tool] {"query": "The behavioral scientist requests generation of six event types: long sleep, working, walking, raining, smoking, and stress. Please analyze and define all inter-event relationships (inclusion, exclusion, sequencing, concurrency) between these events using Linear Temporal Logic (LTL). Only analyze inter-event dependencies, not time window constraints. Use the exact event names as provided. Return the LTL expressions."}
+
+Here are the expert outputs for your review. Please confirm that all details are correct or specify any changes needed. Note: The start_date for the simulation is missing and must be provided as a Python datetime object (e.g., datetime(2025, 3, 8)).
+
+constant_persona_features = {
+    "sample_size": 25,
+    "horizon": {
+        "weeks": 13
+    },
+    "age_group": "43-62",
+    "gender": {
+        "male": 0.575,
+        "female": 0.425
+    },
+    "education_level": {
+        "high_school": 0.6,
+        "bachelor": 0.3,
+        "master": 0.1,
+        "doctorate and above": 0.0
+    },
+    "occupation_status": {
+        "unemployed": 0.3,
+        "parttime": 0.4,
+        "fulltime": 0.3,
+        "self-employed": 0.0
+    },
+    "marital_status": {
+        "single": 0.45,
+        "married": 0.15,
+        "engaged": 0.2,
+        "divorced": 0.2,
+        "separated": 0.0,
+        "widowed": 0.0
+    },
+    "standard": {
+        "morning": [300, 600],     # 05:00-10:00 (5*60=300, 10*60=600)
+        "afternoon": [600, 960],   # 10:00-16:00 (10*60=600, 16*60=960)
+        "evening": [960, 1200],    # 16:00-20:00 (16*60=960, 20*60=1200)
+        "night": [1200, 1440]      # 20:00-24:00 (20*60=1200, 24*60=1440)
+    }
+    # Note: start_date is missing and must be provided by the behavioral scientist.
+}
+
+eventironmental_data = [
+    {
+        "event_name": "long_sleep",
+        "source": "unknown",
+        "description": "A single nightly sleep episode per participant, starting between 20:00 and 24:00, lasting 6-9 hours.",
+        "characteristics": {
+            "required": ["id", "type", "starttime", "endtime", "duration"],
+            "optional": []
+        },
+        "temporal_constraints": {
+            "per_event_duration": {"min": 6, "max": 9, "unit": "hours"},
+            "total_event_duration": {
+                "scale": "day",
+                "min": 6,
+                "max": 9,
+                "unit": "hours"
+            },
+            "total_event_episodes": {
+                "scale": "day",
+                "min": 1,
+                "max": 1,
+                "unit": "number"
+            },
+            "temporal_patterns": [
+                {
+                    "mode": "seasonality",
+                    "details": {
+                        "scale": "night",
+                        "direction": "increasing",
+                        "amount": 100,
+                        "unit": "percentage",
+                        "within": ["night"]
+                    }
+                }
+            ]
+        }
+    },
+    {
+        "event_name": "working",
+        "source": "unknown",
+        "description": "Two work episodes per participant per weekday, each 3-5 hours, only in morning and afternoon. No work on weekends.",
+        "characteristics": {
+            "required": ["id", "type", "starttime", "endtime", "duration"],
+            "optional": []
+        },
+        "temporal_constraints": {
+            "per_event_duration": {"min": 3, "max": 5, "unit": "hours"},
+            "total_event_duration": {
+                "scale": "day",
+                "min": 6,
+                "max": 9,
+                "unit": "hours"
+            },
+            "total_event_episodes": {
+                "scale": "day",
+                "min": 2,
+                "max": 2,
+                "unit": "number"
+            },
+            "temporal_patterns": [
+                {
+                    "mode": "seasonality",
+                    "details": {
+                        "scale": "weekday",
+                        "direction": "increasing",
+                        "amount": 100,
+                        "unit": "percentage",
+                        "within": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
+                    }
+                },
+                {
+                    "mode": "seasonality",
+                    "details": {
+                        "scale": "day_part",
+                        "direction": "increasing",
+                        "amount": 100,
+                        "unit": "percentage",
+                        "within": ["morning", "afternoon"]
+                    }
+                }
+            ]
+        }
+    },
+    {
+        "event_name": "walking",
+        "source": "unknown",
+        "description": "2-8 walking episodes per participant per day, each 10-60 minutes, total 1-4 hours per day. Morning +20% likely, weekends +25%. Over 13 weeks, linearly increase weekly walking episodes by 2 from day 1 to 80, then stable.",
+        "characteristics": {
+            "required": ["id", "type", "starttime", "endtime", "duration", "steps"],
+            "optional": ["distance"]
+        },
+        "temporal_constraints": {
+            "per_event_duration": {"min": 10, "max": 60, "unit": "minutes"},
+            "total_event_duration": {
+                "scale": "day",
+                "min": 1,
+                "max": 4,
+                "unit": "hours"
+            },
+            "total_event_episodes": {
+                "scale": "day",
+                "min": 2,
+                "max": 8,
+                "unit": "number"
+            },
+            "temporal_patterns": [
+                {
+                    "mode": "seasonality",
+                    "details": {
+                        "scale": "morning",
+                        "direction": "increasing",
+                        "amount": 20,
+                        "unit": "percentage",
+                        "within": "morning"
+                    }
+                },
+                {
+                    "mode": "seasonality",
+                    "details": {
+                        "scale": "weekend",
+                        "direction": "increasing",
+                        "amount": 25,
+                        "unit": "percentage",
+                        "within": ["Saturday", "Sunday"]
+                    }
+                },
+                {
+                    "mode": "trend",
+                    "details": {
+                        "scale": "season",
+                        "direction": "increasing",
+                        "amount": 2,
+                        "unit": "number",
+                        "within": "91 days",
+                        "start": 1,
+                        "end": 80
+                    }
+                }
+            ]
+        }
+    },
+    {
+        "event_name": "raining",
+        "source": "unknown",
+        "description": "0-12 rain episodes per participant per day, each 0-60 minutes, total 0-4 hours per day. Morning rain +20% likely. Over first 80 days, linearly reduce weekly rain episodes by 3.",
+        "characteristics": {
+            "required": ["id", "type", "starttime", "endtime", "duration"],
+            "optional": ["precipitation"]
+        },
+        "temporal_constraints": {
+            "per_event_duration": {"min": 0, "max": 60, "unit": "minutes"},
+            "total_event_duration": {
+                "scale": "day",
+                "min": 0,
+                "max": 4,
+                "unit": "hours"
+            },
+            "total_event_episodes": {
+                "scale": "day",
+                "min": 0,
+                "max": 12,
+                "unit": "number"
+            },
+            "temporal_patterns": [
+                {
+                    "mode": "seasonality",
+                    "details": {
+                        "scale": "morning",
+                        "direction": "increasing",
+                        "amount": 20,
+                        "unit": "percentage",
+                        "within": "morning"
+                    }
+                },
+                {
+                    "mode": "trend",
+                    "details": {
+                        "scale": "season",
+                        "direction": "decreasing",
+                        "amount": 3,
+                        "unit": "number",
+                        "within": "80 days",
+                        "start": 1,
+                        "end": 80
+                    }
+                }
+            ]
+        }
+    },
+    {
+        "event_name": "smoking",
+        "source": "unknown",
+        "description": "Up to 40 smoking episodes per participant per day, each exactly 10 minutes, total 0-5 hours per day. Smoking +20% likely in morning. Weekend: +10% events. Over 13 weeks, vary number of episodes: days 1-7 decrease by 8, days 8-15 increase by 3, days 16-23 decrease by 2, days 24-31 increase by 1, days 32-46 decrease by 4, days 46-68 increase by 2, days 69-90 decrease by 7.",
+        "characteristics": {
+            "required": ["id", "type", "starttime", "endtime", "duration"],
+            "optional": []
+        },
+        "temporal_constraints": {
+            "per_event_duration": {"min": 10, "max": 10, "unit": "minutes"},
+            "total_event_duration": {
+                "scale": "day",
+                "min": 0,
+                "max": 5,
+                "unit": "hours"
+            },
+            "total_event_episodes": {
+                "scale": "day",
+                "min": 0,
+                "max": 40,
+                "unit": "number"
+            },
+            "temporal_patterns": [
+                {
+                    "mode": "seasonality",
+                    "details": {
+                        "scale": "morning",
+                        "direction": "increasing",
+                        "amount": 20,
+                        "unit": "percentage",
+                        "within": "morning"
+                    }
+                },
+                {
+                    "mode": "seasonality",
+                    "details": {
+                        "scale": "weekend",
+                        "direction": "increasing",
+                        "amount": 10,
+                        "unit": "percentage",
+                        "within": ["Saturday", "Sunday"]
+                    }
+                },
+                {
+                    "mode": "trend",
+                    "details": {
+                        "scale": "season",
+                        "direction": "decreasing",
+                        "amount": 8,
+                        "unit": "number",
+                        "within": "7 days",
+                        "start": 1,
+                        "end": 7
+                    }
+                },
+                {
+                    "mode": "trend",
+                    "details": {
+                        "scale": "season",
+                        "direction": "increasing",
+                        "amount": 3,
+                        "unit": "number",
+                        "within": "8 days",
+                        "start": 8,
+                        "end": 15
+                    }
+                },
+                {
+                    "mode": "trend",
+                    "details": {
+                        "scale": "season",
+                        "direction": "decreasing",
+                        "amount": 2,
+                        "unit": "number",
+                        "within": "8 days",
+                        "start": 16,
+                        "end": 23
+                    }
+                },
+                {
+                    "mode": "trend",
+                    "details": {
+                        "scale": "season",
+                        "direction": "increasing",
+                        "amount": 1,
+                        "unit": "number",
+                        "within": "8 days",
+                        "start": 24,
+                        "end": 31
+                    }
+                },
+                {
+                    "mode": "trend",
+                    "details": {
+                        "scale": "season",
+                        "direction": "decreasing",
+                        "amount": 4,
+                        "unit": "number",
+                        "within": "15 days",
+                        "start": 32,
+                        "end": 46
+                    }
+                },
+                {
+                    "mode": "trend",
+                    "details": {
+                        "scale": "season",
+                        "direction": "increasing",
+                        "amount": 2,
+                        "unit": "number",
+                        "within": "23 days",
+                        "start": 46,
+                        "end": 68
+                    }
+                },
+                {
+                    "mode": "trend",
+                    "details": {
+                        "scale": "season",
+                        "direction": "decreasing",
+                        "amount": 7,
+                        "unit": "number",
+                        "within": "22 days",
+                        "start": 69,
+                        "end": 90
+                    }
+                }
+            ]
+        }
+    },
+    {
+        "event_name": "stress",
+        "source": "unknown",
+        "description": "2-8 stress episodes per participant per day, each 10-30 minutes, total 0-4 hours per day. Morning: +20% likely. From day 0 to 90, decrease by 2 events, then steady.",
+        "characteristics": {
+            "required": ["id", "type", "starttime", "endtime", "duration"],
+            "optional": []
+        },
+        "temporal_constraints": {
+            "per_event_duration": {"min": 10, "max": 30, "unit": "minutes"},
+            "total_event_duration": {
+                "scale": "day",
+                "min": 0,
+                "max": 4,
+                "unit": "hours"
+            },
+            "total_event_episodes": {
+                "scale": "day",
+                "min": 2,
+                "max": 8,
+                "unit": "number"
+            },
+            "temporal_patterns": [
+                {
+                    "mode": "seasonality",
+                    "details": {
+                        "scale": "morning",
+                        "direction": "increasing",
+                        "amount": 20,
+                        "unit": "percentage",
+                        "within": "morning"
+                    }
+                },
+                {
+                    "mode": "trend",
+                    "details": {
+                        "scale": "season",
+                        "direction": "decreasing",
+                        "amount": 2,
+                        "unit": "number",
+                        "within": "91 days",
+                        "start": 0,
+                        "end": 90
+                    }
+                }
+            ]
+        }
+    }
+]
+
+ltl_expressions = [
+    # Exclusion (no overlap) constraints:
+    "G ¬(long_sleep ∧ smoking)",      # long sleep and smoking cannot co-occur
+    "G ¬(long_sleep ∧ walking)",      # long sleep and walking cannot co-occur
+    "G ¬(long_sleep ∧ stress)",       # long sleep and stress cannot co-occur
+    "G ¬(walking ∧ working)",         # walking and working cannot co-occur
+    "G ¬(raining ∧ smoking)",         # raining and smoking cannot co-occur
+    "G ¬(walking ∧ stress)",          # walking and stress cannot co-occur
+
+    # Sequencing (eventually follows) constraints:
+    "G (stress → F smoking)",         # stress should be followed by a smoking event
+    "G (working → F walking)",        # working should eventually be followed by walking
+    "G (walking → F stress)",         # walking should eventually be followed by stress
+
+    # Overlap (concurrency) constraint:
+    "G (working → F (working ∧ stress))" # presence of working must overlap with a stress event
+]
+
+Action required:
+
+Please provide the start_date for the simulation as a Python datetime object (e.g., datetime(2025, 3, 8)).
+Review all outputs above and confirm if they are correct or if any changes are needed.
+Once confirmed and the start_date is provided, I will proceed to the final data generation step.
+
+The start_date can be omitted, all outputs are correct. Please start data generation
+
+[Supervisor]:
+
+[Expert Query: run_data_generation] {"constant_persona_features":{"sample_size":25,"horizon":{"weeks":13},"age_group":"43-62","gender":{"male":0.575,"female":0.425},"education_level":{"high_school":0.6,"bachelor":0.3,"master":0.1,"doctorate and above":0.0},"occupation_status":{"unemployed":0.3,"parttime":0.4,"fulltime":0.3,"self-employed":0.0},"marital_status":{"single":0.45,"married":0.15,"engaged":0.2,"divorced":0.2,"separated":0.0,"widowed":0.0},"standard":{"morning":[300,600],"afternoon":[600,960],"evening":[960,1200],"night":[1200,1440]}}, "eventironmental_data":[{"event_name":"long_sleep","source":"unknown","description":"A single nightly sleep episode per participant, starting between 20:00 and 24:00, lasting 6-9 hours.","characteristics":{"required":["id","type","starttime","endtime","duration"],"optional":[]},"temporal_constraints":{"per_event_duration":{"min":6,"max":9,"unit":"hours"},"total_event_duration":{"scale":"day","min":6,"max":9,"unit":"hours"},"total_event_episodes":{"scale":"day","min":1,"max":1,"unit":"number"},"temporal_patterns":[{"mode":"seasonality","details":{"scale":"night","direction":"increasing","amount":100,"unit":"percentage","within":["night"]}}]}},{"event_name":"working","source":"unknown","description":"Two work episodes per participant per weekday, each 3-5 hours, only in morning and afternoon. No work on weekends.","characteristics":{"required":["id","type","starttime","endtime","duration"],"optional":[]},"temporal_constraints":{"per_event_duration":{"min":3,"max":5,"unit":"hours"},"total_event_duration":{"scale":"day","min":6,"max":9,"unit":"hours"},"total_event_episodes":{"scale":"day","min":2,"max":2,"unit":"number"},"temporal_patterns":[{"mode":"seasonality","details":{"scale":"weekday","direction":"increasing","amount":100,"unit":"percentage","within":["Monday","Tuesday","Wednesday","Thursday","Friday"]}},{"mode":"seasonality","details":{"scale":"day_part","direction":"increasing","amount":100,"unit":"percentage","within":["morning","afternoon"]}}]}},{"event_name":"walking","source":"unknown","description":"2-8 walking episodes per participant per day, each 10-60 minutes, total 1-4 hours per day. Morning +20% likely, weekends +25%. Over 13 weeks, linearly increase weekly walking episodes by 2 from day 1 to 80, then stable.","characteristics":{"required":["id","type","starttime","endtime","duration","steps"],"optional":["distance"]},"temporal_constraints":{"per_event_duration":{"min":10,"max":60,"unit":"minutes"},"total_event_duration":{"scale":"day","min":1,"max":4,"unit":"hours"},"total_event_episodes":{"scale":"day","min":2,"max":8,"unit":"number"},"temporal_patterns":[{"mode":"seasonality","details":{"scale":"morning","direction":"increasing","amount":20,"unit":"percentage","within":"morning"}},{"mode":"seasonality","details":{"scale":"weekend","direction":"increasing","amount":25,"unit":"percentage","within":["Saturday","Sunday"]}},{"mode":"trend","details":{"scale":"season","direction":"increasing","amount":2,"unit":"number","within":"91 days","start":1,"end":80}}]}},{"event_name":"raining","source":"unknown","description":"0-12 rain episodes per participant per day, each 0-60 minutes, total 0-4 hours per day. Morning rain +20% likely. Over first 80 days, linearly reduce weekly rain episodes by 3.","characteristics":{"required":["id","type","starttime","endtime","duration"],"optional":["precipitation"]},"temporal_constraints":{"per_event_duration":{"min":0,"max":60,"unit":"minutes"},"total_event_duration":{"scale":"day","min":0,"max":4,"unit":"hours"},"total_event_episodes":{"scale":"day","min":0,"max":12,"unit":"number"},"temporal_patterns":[{"mode":"seasonality","details":{"scale":"morning","direction":"increasing","amount":20,"unit":"percentage","within":"morning"}},{"mode":"trend","details":{"scale":"season","direction":"decreasing","amount":3,"unit":"number","within":"80 days","start":1,"end":80}}]}},{"event_name":"smoking","source":"unknown","description":"Up to 40 smoking episodes per participant per day, each exactly 10 minutes, total 0-5 hours per day. Smoking +20% likely in morning. Weekend: +10% events. Over 13 weeks, vary number of episodes: days 1-7 decrease by 8, days 8-15 increase by 3, days 16-23 decrease by 2, days 24-31 increase by 1, days 32-46 decrease by 4, days 46-68 increase by 2, days 69-90 decrease by 7.","characteristics":{"required":["id","type","starttime","endtime","duration"],"optional":[]},"temporal_constraints":{"per_event_duration":{"min":10,"max":10,"unit":"minutes"},"total_event_duration":{"scale":"day","min":0,"max":5,"unit":"hours"},"total_event_episodes":{"scale":"day","min":0,"max":40,"unit":"number"},"temporal_patterns":[{"mode":"seasonality","details":{"scale":"morning","direction":"increasing","amount":20,"unit":"percentage","within":"morning"}},{"mode":"seasonality","details":{"scale":"weekend","direction":"increasing","amount":10,"unit":"percentage","within":["Saturday","Sunday"]}},{"mode":"trend","details":{"scale":"season","direction":"decreasing","amount":8,"unit":"number","within":"7 days","start":1,"end":7}},{"mode":"trend","details":{"scale":"season","direction":"increasing","amount":3,"unit":"number","within":"8 days","start":8,"end":15}},{"mode":"trend","details":{"scale":"season","direction":"decreasing","amount":2,"unit":"number","within":"8 days","start":16,"end":23}},{"mode":"trend","details":{"scale":"season","direction":"increasing","amount":1,"unit":"number","within":"8 days","start":24,"end":31}},{"mode":"trend","details":{"scale":"season","direction":"decreasing","amount":4,"unit":"number","within":"15 days","start":32,"end":46}},{"mode":"trend","details":{"scale":"season","direction":"increasing","amount":2,"unit":"number","within":"23 days","start":46,"end":68}},{"mode":"trend","details":{"scale":"season","direction":"decreasing","amount":7,"unit":"number","within":"22 days","start":69,"end":90}}]}},{"event_name":"stress","source":"unknown","description":"2-8 stress episodes per participant per day, each 10-30 minutes, total 0-4 hours per day. Morning: +20% likely. From day 0 to 90, decrease by 2 events, then steady.","characteristics":{"required":["id","type","starttime","endtime","duration"],"optional":[]},"temporal_constraints":{"per_event_duration":{"min":10,"max":30,"unit":"minutes"},"total_event_duration":{"scale":"day","min":0,"max":4,"unit":"hours"},"total_event_episodes":{"scale":"day","min":2,"max":8,"unit":"number"},"temporal_patterns":[{"mode":"seasonality","details":{"scale":"morning","direction":"increasing","amount":20,"unit":"percentage","within":"morning"}},{"mode":"trend","details":{"scale":"season","direction":"decreasing","amount":2,"unit":"number","within":"91 days","start":0,"end":90}}]}}], "ltl_expressions":["G ¬(long_sleep ∧ smoking)","G ¬(long_sleep ∧ walking)","G ¬(long_sleep ∧ stress)","G ¬(walking ∧ working)","G ¬(raining ∧ smoking)","G ¬(walking ∧ stress)","G (stress → F smoking)","G (working → F walking)","G (walking → F stress)","G (working → F (working ∧ stress))"]}
+
+The data generation process has started using your confirmed parameters and constraints. The simulation will generate synthetic, time-stamped event data for your specified cohort and event rules.
+
+If you would like to review the generated data, request a summary, or need further analyses or visualizations, please let me know!

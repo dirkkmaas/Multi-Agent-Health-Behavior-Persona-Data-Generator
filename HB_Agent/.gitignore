@@ -1,0 +1,7 @@
+.env
+processing/__pycache__/
+__pycache__/
+memory/__pycache__/
+core/__pycache__/
+agents/__pycache__/
+tests/__pycache__/

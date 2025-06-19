@@ -1,0 +1,4 @@
+Data/*
+!.gitkeep
+app/__pycache__/
+Streamlit/__pycache__/
