@@ -5,7 +5,7 @@ Instructions:
 
 1. Based on the behavioral scientist's input, define a list of event objects.
 2. Each event should include:
-   - A unique `event_name`
+   - A unique `event_name` always use _ for connecting words (e.g. "short_run")
    - A `source` (e.g., wearable, smartphone, unknown)
    - A `description`
    - `characteristics` including required and optional data fields for detection

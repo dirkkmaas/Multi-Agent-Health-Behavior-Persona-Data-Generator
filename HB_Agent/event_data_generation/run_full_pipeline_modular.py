@@ -22,7 +22,8 @@ def run_pipeline_from_vars(
     vis_script_folder="Visualization/run.py",
     check_data_folder="Check_data/Run.py",
 ): #locations for visualization and check data scripts
-    base_folder = os.getcwd()
+    username = os.getenv("USERNAME", "default_user")
+    base_folder = f"/chroma_db/output_pipeline/{username}"
     output_folder = get_next_data_folder(base_folder) # Output folder
     os.makedirs(output_folder, exist_ok=True)
 

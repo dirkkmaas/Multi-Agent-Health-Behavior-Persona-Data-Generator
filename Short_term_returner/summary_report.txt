@@ -1,25 +1,25 @@
 === Persona Feature Check ===
-age_group: All ages within bounds. Average age: 54.20
+age_group: All ages within bounds. Average age: 52.32
 gender: Distribution (expected vs actual):
   female: expected 0.40, actual 0.40, count 10
   male: expected 0.60, actual 0.60, count 15
 education_level: Distribution (expected vs actual):
-  bachelor: expected 0.30, actual 0.32, count 8
-  high-school: expected 0.40, actual 0.48, count 12
-  doctorate and above: expected 0.00, actual 0.00, count 0
   master: expected 0.20, actual 0.20, count 5
+  bachelor: expected 0.30, actual 0.32, count 8
+  high_school: expected 0.40, actual 0.48, count 12
+  doctorate and above: expected 0.00, actual 0.00, count 0
 occupation_status: Distribution (expected vs actual):
-  parttime: expected 0.30, actual 0.28, count 7
   unemployed: expected 0.20, actual 0.20, count 5
-  fulltime: expected 0.30, actual 0.32, count 8
+  full-time: expected 0.30, actual 0.32, count 8
   self-employed: expected 0.20, actual 0.20, count 5
+  part-time: expected 0.30, actual 0.28, count 7
 marital_status: Distribution (expected vs actual):
-  divorced: expected 0.20, actual 0.20, count 5
   engaged: expected 0.20, actual 0.20, count 5
   widowed: expected 0.00, actual 0.00, count 0
+  single: expected 0.25, actual 0.24, count 6
   married: expected 0.35, actual 0.36, count 9
   separated: expected 0.00, actual 0.00, count 0
-  single: expected 0.25, actual 0.24, count 6
+  divorced: expected 0.20, actual 0.20, count 5
 standard: Skipped (non-numeric expected values)
 
 === Event Constraint Violations ===
@@ -40,26 +40,26 @@ Event: working
   seasonality - evening: 0.0% actual, expected at least 0.0% (events: 0/3250)
   seasonality - night: 0.0% actual, expected at least 0.0% (events: 0/3250)
 Event: walking
-  seasonality - morning: 36.4% actual, expected at least 40.0% (events: 5333/14649)
-  seasonality - afternoon: 19.2% actual, expected at least 20.0% (events: 2809/14649)
-  seasonality - evening: 24.6% actual, expected at least 20.0% (events: 3609/14649)
-  seasonality - night: 18.9% actual, expected at least 20.0% (events: 2770/14649)
-  seasonality - Outside defined windows: 0.9% (events: 128/14649)
+  seasonality - morning: 36.7% actual, expected at least 40.0% (events: 5380/14649)
+  seasonality - afternoon: 22.1% actual, expected at least 20.0% (events: 3236/14649)
+  seasonality - evening: 21.2% actual, expected at least 20.0% (events: 3112/14649)
+  seasonality - night: 19.2% actual, expected at least 20.0% (events: 2816/14649)
+  seasonality - Outside defined windows: 0.7% (events: 105/14649)
   seasonality - Avg events per day in ['Saturday', 'Sunday']: 7.29, other days: 6.10, diff: 1.19 (19.5%), expected diff: 25
   trend - trend diff 3, expected at least 2 increasing
 Event: raining
-  seasonality - morning: 37.0% actual, expected at least 40.0% (events: 3622/9781)
-  seasonality - afternoon: 18.1% actual, expected at least 20.0% (events: 1770/9781)
-  seasonality - evening: 16.8% actual, expected at least 20.0% (events: 1640/9781)
-  seasonality - night: 19.7% actual, expected at least 20.0% (events: 1925/9781)
-  seasonality - Outside defined windows: 8.4% (events: 824/9781)
+  seasonality - morning: 36.9% actual, expected at least 40.0% (events: 3614/9781)
+  seasonality - afternoon: 18.5% actual, expected at least 20.0% (events: 1807/9781)
+  seasonality - evening: 16.1% actual, expected at least 20.0% (events: 1577/9781)
+  seasonality - night: 18.9% actual, expected at least 20.0% (events: 1848/9781)
+  seasonality - Outside defined windows: 9.6% (events: 935/9781)
   trend - trend diff -4, expected at least 3 decreasing
 Event: smoking
-  seasonality - morning: 39.5% actual, expected at least 40.0% (events: 5448/13786)
-  seasonality - afternoon: 19.1% actual, expected at least 20.0% (events: 2634/13786)
-  seasonality - evening: 17.8% actual, expected at least 20.0% (events: 2458/13786)
-  seasonality - night: 21.9% actual, expected at least 20.0% (events: 3015/13786)
-  seasonality - Outside defined windows: 1.7% (events: 231/13786)
+  seasonality - morning: 39.4% actual, expected at least 40.0% (events: 5437/13786)
+  seasonality - afternoon: 19.5% actual, expected at least 20.0% (events: 2684/13786)
+  seasonality - evening: 17.4% actual, expected at least 20.0% (events: 2397/13786)
+  seasonality - night: 22.2% actual, expected at least 20.0% (events: 3061/13786)
+  seasonality - Outside defined windows: 1.5% (events: 207/13786)
   seasonality - Avg events per day in ['Saturday', 'Sunday']: 6.69, other days: 5.81, diff: 0.88 (15.1%), expected diff: 10
   trend - trend diff -8, expected at least 8 decreasing
   trend - trend diff 4, expected at least 3 increasing
@@ -68,11 +68,11 @@ Event: smoking
   trend - trend diff -4, expected at least 4 decreasing
   trend - trend diff 6, expected at least 6 increasing
 Event: stress
-  seasonality - morning: 41.2% actual, expected at least 40.0% (events: 5863/14222)
-  seasonality - afternoon: 18.7% actual, expected at least 20.0% (events: 2666/14222)
-  seasonality - evening: 21.2% actual, expected at least 20.0% (events: 3017/14222)
-  seasonality - night: 18.0% actual, expected at least 20.0% (events: 2563/14222)
-  seasonality - Outside defined windows: 0.8% (events: 113/14222)
+  seasonality - morning: 41.2% actual, expected at least 40.0% (events: 5865/14222)
+  seasonality - afternoon: 22.5% actual, expected at least 20.0% (events: 3195/14222)
+  seasonality - evening: 17.9% actual, expected at least 20.0% (events: 2541/14222)
+  seasonality - night: 17.8% actual, expected at least 20.0% (events: 2536/14222)
+  seasonality - Outside defined windows: 0.6% (events: 85/14222)
   trend - trend diff 1, expected at least 1 increasing
   trend - trend diff 2, expected at least 3 increasing
   trend - trend diff -2, expected at least 3 decreasing

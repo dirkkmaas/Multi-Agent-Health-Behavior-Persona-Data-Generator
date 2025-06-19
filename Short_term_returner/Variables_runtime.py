@@ -2,7 +2,7 @@ eventironmental_data = [
   {
     "event_name": "long_sleep",
     "source": "unknown",
-    "description": "A single, long-duration sleep episode per participant per day, starting at night.",
+    "description": "A long sleep episode, typically occurring once per night, lasting 6-9 hours, starting between 20:00 and 24:00.",
     "characteristics": {
       "required": [
         "id",
@@ -50,7 +50,7 @@ eventironmental_data = [
   {
     "event_name": "working",
     "source": "unknown",
-    "description": "Work episodes during weekdays, two per day, only in morning and afternoon.",
+    "description": "Work episodes on weekdays, two per day, each lasting 3-5 hours, total 6-9 hours, only in morning and afternoon.",
     "characteristics": {
       "required": [
         "id",
@@ -115,7 +115,7 @@ eventironmental_data = [
   {
     "event_name": "walking",
     "source": "unknown",
-    "description": "Walking episodes throughout the day, with increased likelihood in the morning and on weekends. Weekly episodes increase over 13 weeks.",
+    "description": "Walking episodes, 2-8 per day, each 10-60 minutes, total 1-4 hours per day, more likely in morning and on weekends, with weekly average increasing by 2 from day 1 to 80 then stable.",
     "characteristics": {
       "required": [
         "id",
@@ -189,7 +189,7 @@ eventironmental_data = [
   {
     "event_name": "raining",
     "source": "unknown",
-    "description": "Rain episodes throughout the day, with increased likelihood in the morning. Weekly rain episodes decrease over the first 80 days.",
+    "description": "Rain episodes, 0-12 per day, each 0-60 minutes, total 0-4 hours per day, more likely in morning, with weekly rain episodes decreasing by 3 over first 80 days.",
     "characteristics": {
       "required": [
         "id",
@@ -249,7 +249,7 @@ eventironmental_data = [
   {
     "event_name": "smoking",
     "source": "unknown",
-    "description": "Smoking episodes throughout the day, with morning and weekend increases. Complex trend over 13 weeks.",
+    "description": "Smoking episodes, up to 22 per day, each 10 minutes, total 0-5 hours per day, more likely in morning and on weekends, with complex temporal trends.",
     "characteristics": {
       "required": [
         "id",
@@ -380,7 +380,7 @@ eventironmental_data = [
   {
     "event_name": "stress",
     "source": "unknown",
-    "description": "Stress episodes throughout the day, with increased likelihood in the morning and several trend periods.",
+    "description": "Stress episodes, 2-8 per day, each 10-30 minutes, total 0-4 hours per day, more likely in morning, with specific temporal trends.",
     "characteristics": {
       "required": [
         "id",
@@ -463,6 +463,7 @@ eventironmental_data = [
 ltl_expressions = [
   "G \u00ac(long_sleep \u2227 smoking)",
   "G \u00ac(long_sleep \u2227 walking)",
+  "G \u00ac(long_sleep \u2227 working)",
   "G \u00ac(long_sleep \u2227 stress)",
   "G \u00ac(walking \u2227 working)",
   "G \u00ac(raining \u2227 smoking)",
@@ -483,15 +484,15 @@ constant_persona_features = {
     "female": 0.4
   },
   "education_level": {
-    "high-school": 0.4,
+    "high_school": 0.4,
     "bachelor": 0.3,
     "master": 0.2,
     "doctorate and above": 0.0
   },
   "occupation_status": {
     "unemployed": 0.2,
-    "parttime": 0.3,
-    "fulltime": 0.3,
+    "part-time": 0.3,
+    "full-time": 0.3,
     "self-employed": 0.2
   },
   "marital_status": {

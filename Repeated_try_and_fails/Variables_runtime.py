@@ -1,8 +1,8 @@
 eventironmental_data = [
   {
-    "event_name": "long sleep",
+    "event_name": "long_sleep",
     "source": "unknown",
-    "description": "A single, extended sleep episode occurring at night.",
+    "description": "A single long sleep episode per participant per day, starting at night (20:00-24:00), lasting 6-9 hours.",
     "characteristics": {
       "required": [
         "id",
@@ -50,7 +50,7 @@ eventironmental_data = [
   {
     "event_name": "working",
     "source": "unknown",
-    "description": "Work episodes occurring on weekdays in the morning and afternoon.",
+    "description": "Two working episodes per participant per weekday, each 3-5 hours, total 6-9 hours, only in morning and afternoon, none on weekends.",
     "characteristics": {
       "required": [
         "id",
@@ -115,7 +115,7 @@ eventironmental_data = [
   {
     "event_name": "walking",
     "source": "unknown",
-    "description": "Walking episodes throughout the day, with increased likelihood in the morning and on weekends, and a linear increase in weekly episodes over time.",
+    "description": "Walking episodes per participant per day, 2-8 times, each 10-60 minutes, total 1-4 hours/day. Morning: +20% likelihood. Weekends: +25% probability. Over 13 weeks, linearly increase average weekly episodes by 2 from day 1 to 80, then stable.",
     "characteristics": {
       "required": [
         "id",
@@ -174,11 +174,11 @@ eventironmental_data = [
         {
           "mode": "trend",
           "details": {
-            "scale": "day",
+            "scale": "season",
             "direction": "increasing",
             "amount": 2,
             "unit": "number",
-            "within": "7 days",
+            "within": "80 days",
             "start": 1,
             "end": 80
           }
@@ -189,7 +189,7 @@ eventironmental_data = [
   {
     "event_name": "raining",
     "source": "unknown",
-    "description": "Rain episodes throughout the day, with increased likelihood in the morning and a linear decrease in weekly rain episodes over time.",
+    "description": "Raining episodes per participant per day, 0-12 times, each 0-60 minutes, total 0-4 hours/day. Morning: +20% likelihood. Over first 80 days, linearly reduce expected weekly rain episodes by 3.",
     "characteristics": {
       "required": [
         "id",
@@ -234,11 +234,11 @@ eventironmental_data = [
         {
           "mode": "trend",
           "details": {
-            "scale": "day",
+            "scale": "season",
             "direction": "decreasing",
             "amount": 3,
             "unit": "number",
-            "within": "7 days",
+            "within": "80 days",
             "start": 1,
             "end": 80
           }
@@ -249,7 +249,7 @@ eventironmental_data = [
   {
     "event_name": "smoking",
     "source": "unknown",
-    "description": "Smoking episodes throughout the day, with morning and weekend seasonality, and a complex pattern of increases and decreases in episodes over time.",
+    "description": "Smoking episodes per participant per day, up to 22 times, each 10 minutes, total 0-5 hours/day. Morning: +20% likelihood. Weekend: +10% episodes. Over 13 weeks, episode count: days 1-7 decrease by 8, days 8-22 increase by 1, days 23-37 decrease by 1, days 38-52 increase by 3, days 53-67 decrease by 1, days 68-89 increase by 5.",
     "characteristics": {
       "required": [
         "id",
@@ -305,7 +305,7 @@ eventironmental_data = [
         {
           "mode": "trend",
           "details": {
-            "scale": "day",
+            "scale": "season",
             "direction": "decreasing",
             "amount": 8,
             "unit": "number",
@@ -317,7 +317,7 @@ eventironmental_data = [
         {
           "mode": "trend",
           "details": {
-            "scale": "day",
+            "scale": "season",
             "direction": "increasing",
             "amount": 1,
             "unit": "number",
@@ -329,7 +329,7 @@ eventironmental_data = [
         {
           "mode": "trend",
           "details": {
-            "scale": "day",
+            "scale": "season",
             "direction": "decreasing",
             "amount": 1,
             "unit": "number",
@@ -341,7 +341,7 @@ eventironmental_data = [
         {
           "mode": "trend",
           "details": {
-            "scale": "day",
+            "scale": "season",
             "direction": "increasing",
             "amount": 3,
             "unit": "number",
@@ -353,7 +353,7 @@ eventironmental_data = [
         {
           "mode": "trend",
           "details": {
-            "scale": "day",
+            "scale": "season",
             "direction": "decreasing",
             "amount": 1,
             "unit": "number",
@@ -365,7 +365,7 @@ eventironmental_data = [
         {
           "mode": "trend",
           "details": {
-            "scale": "day",
+            "scale": "season",
             "direction": "increasing",
             "amount": 5,
             "unit": "number",
@@ -380,7 +380,7 @@ eventironmental_data = [
   {
     "event_name": "stress",
     "source": "unknown",
-    "description": "Episodes of stress throughout the day, with morning seasonality and a series of trends in episode frequency.",
+    "description": "Stress episodes per participant per day, 2-8 times, each 10-30 minutes, total 0-4 hours/day. Morning: +20% likelihood. Days 1-30: increase average by 3, day 40: decrease by 2 over 10 days, days 55-65: decrease by 1, then stable.",
     "characteristics": {
       "required": [
         "id",
@@ -423,7 +423,7 @@ eventironmental_data = [
         {
           "mode": "trend",
           "details": {
-            "scale": "day",
+            "scale": "season",
             "direction": "increasing",
             "amount": 3,
             "unit": "number",
@@ -435,19 +435,19 @@ eventironmental_data = [
         {
           "mode": "trend",
           "details": {
-            "scale": "day",
+            "scale": "season",
             "direction": "decreasing",
             "amount": 2,
             "unit": "number",
-            "within": "11 days",
+            "within": "10 days",
             "start": 40,
-            "end": 50
+            "end": 49
           }
         },
         {
           "mode": "trend",
           "details": {
-            "scale": "day",
+            "scale": "season",
             "direction": "decreasing",
             "amount": 1,
             "unit": "number",
@@ -463,6 +463,7 @@ eventironmental_data = [
 ltl_expressions = [
   "G \u00ac(long_sleep \u2227 smoking)",
   "G \u00ac(long_sleep \u2227 walking)",
+  "G \u00ac(long_sleep \u2227 working)",
   "G \u00ac(long_sleep \u2227 stress)",
   "G \u00ac(walking \u2227 working)",
   "G \u00ac(raining \u2227 smoking)",

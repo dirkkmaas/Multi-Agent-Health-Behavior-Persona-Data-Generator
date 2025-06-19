@@ -71,6 +71,6 @@ A web-based chatbot implemented as proof-of-concept that leverages a LLM-based m
 - For the test case we used the study of Paciorkowski et al. Four different smoking cessation profiles are identified in this study. The smoking behavior is described in a natural language prompt, adjusted to a horizon of 90 days to limit computational strain and augmented with additional events and inter-event relations. These inter-event relations are stored in a PDF which is available at HB_agent/Set_up/Semantic_memory and supplied to the semantic memory of the analytical agent. The results of these prompts and interaction logs are available in the folders : Long_term_quitters, Persistent_smokers, Repeated_try_and_fails and Short_term_returner. 
 
 ## References:
-Paciorkowski, M., Baty, F., Pohle, S., Bürki, E., Brutsche, M. (2022). Identification of smoking cessation phenotypes as a basis for individualized counseling: An explorative real-world cohort study. Tobacco Induced Diseases, 20(September), 81. https://doi.org/10.18332/tid/152546
-Sumers, T. R., Yao, S., Narasimhan, K., & Griffiths, T. L. (2024). Cognitive architectures for language agents (Version 3) [Preprint]. arXiv. https://arxiv.org/abs/2309.02427
+- Paciorkowski, M., Baty, F., Pohle, S., Bürki, E., Brutsche, M. (2022). Identification of smoking cessation phenotypes as a basis for individualized counseling: An explorative real-world cohort study. Tobacco Induced Diseases, 20(September), 81. https://doi.org/10.18332/tid/152546
+- Sumers, T. R., Yao, S., Narasimhan, K., & Griffiths, T. L. (2024). Cognitive architectures for language agents (Version 3) [Preprint]. arXiv. https://arxiv.org/abs/2309.02427
 

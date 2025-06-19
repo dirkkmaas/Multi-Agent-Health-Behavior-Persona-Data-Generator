@@ -52,8 +52,8 @@ def start_hb_agent(username, openai_key, port):
                     detach=True,
                     environment={"OPENAI_API_KEY": openai_key, "USERNAME": username},
                     ports={'5000/tcp': port},
-                    network="docker_hb_agent_app_network",
-                    volumes={'docker_hb_agent_chroma_data': {'bind': '/chroma_db', 'mode': 'rw'}}
+                    network="app_network",  # use fixed network name, not folder-prefixed
+                    volumes={'chroma_data': {'bind': '/chroma_db', 'mode': 'rw'}}  # use fixed volume name
                 ) # create a new container with its name, OpenAI key, username and user specific port
                 st.session_state.hb_agent_container_name = container_name
 

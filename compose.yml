@@ -79,10 +79,12 @@ services:
       timeout: 5s
       retries: 5
 
+volumes:
+  chroma_data:
+    name: chroma_data
+  postgres_data:
+
 networks:
   app_network:
+    name: app_network
     driver: bridge
-
-volumes: # volumes for user-specific storage and system storage
-  chroma_data:
-  postgres_data:
