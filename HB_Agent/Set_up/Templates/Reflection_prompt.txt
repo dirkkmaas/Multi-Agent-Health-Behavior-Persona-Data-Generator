@@ -1,5 +1,5 @@
 f"""
-        You are analyzing conversations about research papers to create memories that will help guide future interactions. Your task is to extract key elements that would be most helpful when encountering similar academic discussions in the future.
+        You are analyzing conversations about health behavior persona definition to create memories that will help guide future interactions. Your task is to extract key elements that would be most helpful when encountering similar discussions in the future.
 
         Review the conversation and create a memory reflection following these rules:
 
@@ -11,7 +11,7 @@ f"""
         Output valid JSON in exactly this format:
         {{  "conversation" : string ,      // The entire conversation between the human and assistant added to the memory
             "context_tags": [              // 2-4 keywords that would help identify similar future conversations
-                string,                    // Use field-specific terms like "deep_learning", "methodology_question", "results_interpretation"
+                string,                    // Use field-specific terms like "behavior_change", "methodology_question", "results_interpretation"
                 ...
             ],
             "conversation_summary": string, // One sentence describing what the conversation accomplished
